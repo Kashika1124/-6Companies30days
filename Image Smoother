@@ -1,0 +1,34 @@
+PROBLEM STATEMENT : An image smoother is a filter of the size 3 x 3 that can be applied to each cell of an image by rounding down the average of the cell and the eight surrounding cells
+(i.e., the average of the nine cells in the blue smoother).
+If one or more of the surrounding cells of a cell is not present, we do not consider it in the average (i.e., the average of the four cells in the red smoother).
+CODE:
+class Solution {
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length; 
+        int n = img[0].length; 
+        int[][] result = new int[m][n]; 
+        int[] directions = {-1, 0, 1}; 
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int sum = img[i][j]; 
+                int count = 1; // Start with 1 for the current cell
+                
+                for (int dx : directions) {
+                    for (int dy : directions) {
+                        int ni = i + dx;
+                        int nj = j + dy;
+                        // Only count valid neighbors that are within bounds
+                        if (ni >= 0 && ni < m && nj >= 0 && nj < n && (dx != 0 || dy != 0)) {
+                            sum += img[ni][nj];
+                            count++;
+                        }
+                    }
+                }
+                result[i][j] = sum / count; // Average (rounded down)
+            }
+        }
+        
+        return result;
+    }
+}
